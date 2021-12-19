@@ -2,6 +2,7 @@ package panel
 
 import (
 	"encoding/json"
+	"github.com/XrayR-project/XrayR/api/sakura"
 	io "io/ioutil"
 	"log"
 	"sync"
@@ -151,6 +152,8 @@ func (p *Panel) Start() {
 			apiClient = pmpanel.New(nodeConfig.ApiConfig)
 		case "Proxypanel":
 			apiClient = proxypanel.New(nodeConfig.ApiConfig)
+		case "Sakura":
+			apiClient = sakura.New(nodeConfig.ApiConfig)
 		default:
 			log.Panicf("Unsupport panel type: %s", nodeConfig.PanelType)
 		}
@@ -188,7 +191,7 @@ func (p *Panel) Close() {
 			log.Panicf("Panel Close fialed: %s", err)
 		}
 	}
-	p.Server.Close()
+	_ = p.Server.Close()
 	p.Running = false
 	return
 }
